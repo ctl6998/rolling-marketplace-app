@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rollingmarketplace1-dev-05645-authRole",
+      "UnauthRoleArn": "arn:aws:iam::902265466494:role/amplify-rollingmarketplace1-dev-05645-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::902265466494:role/amplify-rollingmarketplace1-dev-05645-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-rollingmarketplace1-dev-05645-deployment",
+      "UnauthRoleName": "amplify-rollingmarketplace1-dev-05645-unauthRole",
+      "StackName": "amplify-rollingmarketplace1-dev-05645",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:902265466494:stack/amplify-rollingmarketplace1-dev-05645/ba73a9c0-daed-11ed-92a5-0a1fd865acee",
+      "AmplifyAppId": "d3o6t04xx3n8ul"
+    }
+  }
+}

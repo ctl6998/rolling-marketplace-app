@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Product from './pages/Product';
 import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
+import Dashboad from './pages/Dashboad';
 
 function App() {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ function App() {
         {
           path: "/products/:id",
           element: <ProductDetail/>,
+        },
+        {
+          path: "/dashboard",
+          element: <Dashboad/>,
         },
       ],
     },
