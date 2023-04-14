@@ -23,8 +23,35 @@ const theme = createTheme({
   },
 });
 
-const pages = ["Home", "Marketplace"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  {
+    name: "Home",
+    url: "",
+  },
+  {
+    name: "Marketplace",
+    url: "marketplace",
+  },
+  {
+    name: "Admin",
+    url: "admin",
+  },
+];
+
+const settings = [
+  {
+    name: "Profile",
+    url: "",
+  },
+  {
+    name: "Account",
+    url: "admin",
+  },
+  {
+    name: "Logout",
+    url: "",
+  },
+];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -98,9 +125,11 @@ function Header() {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                {pages.map(({ name, url }) => (
+                  <MenuItem key={name} onClick={handleCloseNavMenu}>
+                    <NavLink to={`/${url}`}>
+                      <Typography textAlign="center">{name}</Typography>\
+                    </NavLink>
                   </MenuItem>
                 ))}
               </Menu>
@@ -125,13 +154,13 @@ function Header() {
               LOGO
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
+              {pages.map(({ name, url }) => (
                 <Button
-                  key={page}
+                  key={name}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page}
+                  <NavLink to={`/${url}`} className="menu-link">{name}</NavLink>
                 </Button>
               ))}
             </Box>
@@ -158,9 +187,14 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                {settings.map(({name,url}) => (
+                  <MenuItem key={name} onClick={handleCloseUserMenu}>
+                    <NavLink 
+                      to={`/${url}`} 
+                      className="setting-link"
+                    >
+                    <Typography textAlign="center">{name}</Typography>
+                    </NavLink>
                   </MenuItem>
                 ))}
               </Menu>

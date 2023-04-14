@@ -7,6 +7,7 @@ import {
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import Product from './pages/Product';
+import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
 
 function App() {
@@ -26,6 +27,10 @@ function App() {
         {
           path: "/admin",
           element: <Admin/>,
+        },
+        {
+          path: "/products/:id",
+          element: <ProductDetail/>,
         },
       ],
     },
