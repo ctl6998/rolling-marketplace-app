@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Dashboad() {
+export default function Dashboard() {
   return (
     <section>
       <header className="form-header">
@@ -59,13 +59,13 @@ export default function Dashboad() {
           </div>
           <div className="author-form">
             <p>
-              <label htmlFor="author">Author</label>
+              <label htmlFor="author">Owner</label>
             </p>
             <p>
               <input
                 name="author"
                 type="text"
-                placeholder="Type the author's name"
+                placeholder="Type the owner name"
                 // onChange={(e) =>
                 //   setBookDetails({ ...bookDetails, author: e.target.value })
                 // }
@@ -79,7 +79,7 @@ export default function Dashboad() {
               <input
                 name="price"
                 type="text"
-                placeholder="What is the Price of the book (USD)"
+                placeholder="Pricing"
                 // onChange={(e) =>
                 //   setBookDetails({ ...bookDetails, price: e.target.value })
                 // }

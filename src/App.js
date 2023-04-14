@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import Product from './pages/Product';
 import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
-import Dashboad from './pages/Dashboad';
+import Form from './pages/form/Form';
 
 function App() {
   const router = createBrowserRouter([
@@ -26,19 +26,21 @@ function App() {
           element: <Product />,
         },
         {
-          path: "/admin",
-          element: <Admin/>,
-        },
-        {
           path: "/products/:id",
           element: <ProductDetail/>,
         },
-        {
-          path: "/dashboard",
-          element: <Dashboad/>,
-        },
       ],
     },
+    {
+      path: "/admin",
+      element: <Admin/>,
+      children: [
+        {
+          path: "/admin",
+          element: <Form />,
+        }
+      ]
+    }
   ]);
   return (
     <RouterProvider router={router} />

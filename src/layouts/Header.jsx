@@ -35,11 +35,7 @@ const pages = [
   {
     name: "Admin",
     url: "admin",
-  },
-  {
-    name: "Dashboard",
-    url: "dashboard",
-  },
+  }
 ];
 
 const settings = [
@@ -50,11 +46,7 @@ const settings = [
   {
     name: "Account",
     url: "admin",
-  },
-  {
-    name: "Logout",
-    url: "",
-  },
+  }
 ];
 
 function Header() {
