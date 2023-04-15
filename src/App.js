@@ -10,6 +10,7 @@ import Product from './pages/Product';
 import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
 import Form from './pages/form/Form';
+import Data from './pages/Data';
 
 function App() {
   const router = createBrowserRouter([
@@ -29,6 +30,10 @@ function App() {
           path: "/products/:id",
           element: <ProductDetail/>,
         },
+        {
+          path: "/database",
+          element: <Data />
+        }
       ],
     },
     {

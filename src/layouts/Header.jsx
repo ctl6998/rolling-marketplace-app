@@ -35,6 +35,10 @@ const pages = [
   {
     name: "Admin",
     url: "admin",
+  },
+  {
+    name: "Data",
+    url: "database",
   }
 ];
 

@@ -1,25 +1,20 @@
 import * as React from "react";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Grid from "@mui/material/Grid";
 import { Button, TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect, useRef } from "react";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { v4 as uuidv4 } from "uuid";
 import awsconfig from "../../aws-exports";
 import { Storage } from "aws-amplify";
 import { Amplify } from "aws-amplify";
-
-Amplify.configure(awsconfig);
-
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket,
-} = awsconfig;
-
 function getStyles(name, cateName, theme) {
   return {
     fontWeight:
@@ -28,7 +23,6 @@ function getStyles(name, cateName, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -39,6 +33,12 @@ const MenuProps = {
     },
   },
 };
+Amplify.configure(awsconfig);
+const {
+  aws_user_files_s3_bucket_region: region,
+  aws_user_files_s3_bucket: bucket,
+} = awsconfig;
+const date = new Date();
 
 export default function Form() {
   const theme = useTheme();
@@ -57,7 +57,7 @@ export default function Form() {
 
   // Hanlde form logic
   const [formDetails, setFormDetails] = useState({
-    date: "",
+    date: date,
     name: "",
     price: "",
     image: "",
@@ -68,35 +68,36 @@ export default function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formDetails);
+    handleClickOpen();
     // postData();
   };
 
   const handleReset = async (e) => {
     setFormDetails({
-      date: "",
       name: "",
       price: "",
       image: "",
       description: "",
     });
     setCateName([]);
-    setFile('');
-    await Storage.remove(key.replace("/images", ""),  { level: "public" })
+    setFile("");
+    await Storage.remove(key.replace("/images", ""), { level: "public" });
   };
 
   // Handle image
   const [file, setFile] = useState();
   const [uploaded, setUploaded] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
-  const [key, setKey] = useState('')
+  const [imageUrl, setImageUrl] = useState("");
+  const [key, setKey] = useState("");
   const handleImageUpload = async (e) => {
     e.preventDefault();
     const file = e.target.files[0];
-    // console.log(file);
     const extension = file.name.split(".")[1];
     const name = file.name.split(".")[0];
     setKey(`images/${uuidv4()}${name}.${extension}`);
-    const url = await `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
+    const key = `images/${uuidv4()}${name}.${extension}`;
+    const url =
+      await `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
     try {
       // Upload the file to s3 with public access level.
       const storageResult = await Storage.put(key, file, {
@@ -112,31 +113,17 @@ export default function Form() {
       console.log(err);
     }
   };
-
-  // console.log(key)
-  // console.log(file)
-  // async () => {
-  //   const storageResult = await Storage.put("puppy.png", file, {
-  //     level: "public",
-  //     type: "image/png,image/jpg",
-  //   });
-  //   setUploaded(true);
-  //   console.log(storageResult);
-  // }
-
-  // setFile(e.target.files[0])
-
   // Handle http request
   const postData = async () => {
     try {
       const response = await fetch(
-        "https://6439c4eb90cd4ba563eda753.mockapi.io/products",
+        "https://9m0mdrl7ea.execute-api.ap-southeast-1.amazonaws.com/dev/product",
         {
           method: "POST",
           headers: {
-            "Access-Control-Allow-Headers": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST,GET,PATCH,DELETE",
+            'Access-Control-Allow-Origin':'*',
+            'Access-Control-Allow-Credentials': true, 
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(formDetails),
         }
@@ -147,9 +134,44 @@ export default function Form() {
       console.error("Error:", error);
     }
   };
-
+  // Handle popup
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleConfirmation = async () => {
+    await postData();
+    setOpen(false);
+    handleReset();
+  }
   return (
     <>
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Continue updating the product?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+                This means sending the data to database
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleConfirmation} autoFocus>
+              Update
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       <form
         className="product-form"
         noValidate
@@ -170,7 +192,7 @@ export default function Form() {
             <Button
               variant="outlined"
               component="label"
-              style={{ flexGrow: "4", flexDirection: "column", gap:"15px" }}
+              style={{ flexGrow: "4", flexDirection: "column", gap: "15px" }}
             >
               {uploaded ? (
                 <img className="image-preview" src={file} alt="" />
@@ -222,9 +244,10 @@ export default function Form() {
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={formDetails.categories || ""}
+              value={formDetails.categories || []}
               input={<OutlinedInput />}
               MenuProps={MenuProps}
+              multiple
               onChange={handleChange}
             >
               {categories.map((name) => (
@@ -237,7 +260,6 @@ export default function Form() {
                 </MenuItem>
               ))}
             </Select>
-
             <TextField
               id="outlined-multiline-static"
               label="Product Description"
