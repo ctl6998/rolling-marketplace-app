@@ -16,7 +16,8 @@
         "rollingmarketplace18db2fe33": {}
       },
       "function": {
-        "testfunction": {}
+        "testfunction": {},
+        "test2function": {}
       }
     }
   }

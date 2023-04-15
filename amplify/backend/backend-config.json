@@ -26,6 +26,11 @@
     }
   },
   "function": {
+    "test2function": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "testfunction": {
       "build": true,
       "providerPlugin": "awscloudformation",
