@@ -52,7 +52,7 @@ export default function Form() {
     setFormDetails({ ...formDetails, categories: cateName });
   }, [cateName]);
 
-  //Hanlde form logic
+  // Hanlde form logic
   const [formDetails, setFormDetails] = useState({
     date: "",
     name: "",
@@ -64,8 +64,8 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("check");
     console.log(formDetails);
+    postData()
   };
 
   const handleReset = (e) => {
@@ -79,6 +79,23 @@ export default function Form() {
     });
     setCateName([]);
   };
+
+  // Handle http request
+  const postData = async () => {
+    try {
+      const response = await fetch('https://6439c4eb90cd4ba563eda753.mockapi.io/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDetails)
+      });
+      const data = await response.json();
+      console.log(data)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   return (
     <>
@@ -171,9 +188,9 @@ export default function Form() {
             <Button variant="contained" type="submit">
               Update Product
             </Button>
-            <button type="button" onClick={handleReset}>
+            <Button variant="outlined" type="button" onClick={handleReset}>
               Reset
-            </button>
+            </Button>
           </Grid>
         </Grid>
       </form>
