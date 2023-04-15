@@ -11,9 +11,9 @@ export default function Product() {
   console.log(data);
 
   if (data.products.length == 0) {
-    return <h3 style={{textAlign:"center"}}>Loading...</h3>;
+    return <h3 style={{textAlign:"center"}}>Loading....</h3>;
   }
-  
+
   return (
     <Container
       maxWidth="xl"
