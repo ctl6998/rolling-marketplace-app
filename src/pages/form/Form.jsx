@@ -185,7 +185,7 @@ export default function Form() {
             </Button>
             <div>
               {uploaded ? (
-                <div>Your image is uploaded!</div>
+                <div>Your image is uploaded!!</div>
               ) : (
                 <div>Upload your product photos</div>
               )}
