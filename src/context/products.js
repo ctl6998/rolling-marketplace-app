@@ -15,8 +15,13 @@ const ProductProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://6439c4eb90cd4ba563eda753.mockapi.io/products', {
+      const response = await fetch('https://9m0mdrl7ea.execute-api.ap-southeast-1.amazonaws.com/dev/products', {
         method: 'GET',
+        headers: {
+          'Access-Control-Allow-Origin':'*',
+          'Access-Control-Allow-Credentials': true, 
+          'Content-Type': 'application/json'
+        },
       });
       const data = await response.json();
       setProducts(data);
