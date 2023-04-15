@@ -26,14 +26,7 @@
     }
   },
   "function": {},
-  "predictions": {
-    "identifyLabels10d89009": {
-      "dependsOn": [],
-      "identifyType": "identifyLabels",
-      "providerPlugin": "awscloudformation",
-      "service": "Rekognition"
-    }
-  },
+  "predictions": {},
   "storage": {
     "rmmedia": {
       "dependsOn": [],

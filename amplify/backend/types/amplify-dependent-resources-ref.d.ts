@@ -10,12 +10,6 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolName": "string"
     }
   },
-  "predictions": {
-    "identifyLabels10d89009": {
-      "region": "string",
-      "type": "string"
-    }
-  },
   "storage": {
     "rmmedia": {
       "BucketName": "string",
