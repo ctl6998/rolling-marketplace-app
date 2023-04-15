@@ -32,11 +32,5 @@
       "service": "Lambda"
     }
   },
-  "storage": {
-    "rmmedia": {
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "S3"
-    }
-  }
+  "storage": {}
 }

@@ -206,7 +206,6 @@ export default function Form() {
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              multiple
               value={cateName}
               input={<OutlinedInput />}
               MenuProps={MenuProps}
