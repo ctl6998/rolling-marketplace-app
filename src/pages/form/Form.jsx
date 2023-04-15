@@ -11,6 +11,12 @@ import { useState, useEffect, useRef } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { v4 as uuidv4 } from 'uuid'; 
 import { Storage } from "aws-amplify";
+// import config from '../aws-exports';
+
+// const {
+//   aws_user_files_s3_bucket_region: region,
+//   aws_user_files_s3_bucket: bucket
+// } = config
 
 function getStyles(name, cateName, theme) {
   return {

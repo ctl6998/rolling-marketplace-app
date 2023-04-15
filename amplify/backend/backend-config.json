@@ -33,18 +33,8 @@
     }
   },
   "storage": {
-    "rollingmarketplacemedia": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn",
-            "LambdaExecutionRole"
-          ],
-          "category": "function",
-          "resourceName": "S3Triggerab38512e"
-        }
-      ],
+    "rmmedia": {
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"
     }
