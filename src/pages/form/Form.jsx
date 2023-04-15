@@ -8,6 +8,9 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect, useRef } from "react";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { v4 as uuidv4 } from 'uuid'; 
+import { Storage } from "aws-amplify";
 
 function getStyles(name, cateName, theme) {
   return {
@@ -65,7 +68,7 @@ export default function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formDetails);
-    postData()
+    postData();
   };
 
   const handleReset = (e) => {
@@ -80,22 +83,51 @@ export default function Form() {
     setCateName([]);
   };
 
+  // Handle image
+  const [image, setImage] = useState(null);
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    const extension = file.name.split(".")[1];
+    const name = file.name.split(".")[0];
+    const key = `images/${uuidv4()}${name}.${extension}`;
+    // const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
+    // try {
+    //   // Upload the file to s3 with public access level.
+    //   await Storage.put(key, file, {
+    //     level: "public",
+    //     contentType: file.type,
+    //   });
+    //   // Retrieve the uploaded file to display
+    //   const image = await Storage.get(key, { level: "public" });
+    //   setImage(image);
+    //   setBookDetails({ ...bookDetails, image: url });
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  }
+
   // Handle http request
   const postData = async () => {
     try {
-      const response = await fetch('https://6439c4eb90cd4ba563eda753.mockapi.io/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formDetails)
-      });
+      const response = await fetch(
+        "https://6439c4eb90cd4ba563eda753.mockapi.io/products",
+        {
+          method: "POST",
+          headers: {
+            'Access-Control-Allow-Headers' : 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST,GET,PATCH,DELETE'
+          },
+          body: JSON.stringify(formDetails),
+        }
+      );
       const data = await response.json();
-      console.log(data)
+      console.log(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
-  }
+  };
 
   return (
     <>
@@ -116,14 +148,24 @@ export default function Form() {
               justifyContent: "center",
             }}
           >
-            <Button
-              variant="outlined"
-              component="label"
-              style={{ flexGrow: "4" }}
-            >
-              Upload Image
-              <input type="file" hidden />
-            </Button>
+            {image ? (
+              <img className="image-preview" src={image} alt="" />
+            ) : (
+              <Button
+                variant="outlined"
+                component="label"
+                style={{ flexGrow: "4" }}
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload Image
+                <input
+                  type="file"
+                  accept="image/jpg"
+                  onChange={(e) => handleImageUpload(e)}
+                  hidden
+                />
+              </Button>
+            )}
           </Grid>
           <Grid
             item

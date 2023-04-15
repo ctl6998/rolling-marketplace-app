@@ -10,16 +10,17 @@ export default function Product() {
   const data = useContext(ProductContext);
   console.log(data);
 
-  if (!data.products.length) {
+  if (data.products.length == 0) {
     return <h3 style={{textAlign:"center"}}>Loading...</h3>;
   }
+  
   return (
     <Container
       maxWidth="xl"
       style={{ paddingTop: "50px", paddingBottom: "100px" }}
     >
       <section className="products">
-        {data.products.map(({ name, price, image, categories, id }) => (
+        {data.products.products.map(({ name, price, image, categories, id }) => (
           <article key={id} className="product">
             <div className="product-image">
               <img 
