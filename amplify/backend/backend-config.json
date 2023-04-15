@@ -25,37 +25,20 @@
       "service": "Cognito"
     }
   },
-  "function": {
-    "S3Triggerab38512e": {
-      "build": true,
+  "function": {},
+  "predictions": {
+    "identifyLabels10d89009": {
+      "dependsOn": [],
+      "identifyType": "identifyLabels",
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_storage_rollingmarketplace11fdf303f_bucketName": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "rollingmarketplace11fdf303f"
-        }
-      ]
-    },
-    "AMPLIFY_storage_rollingmarketplace11fdf303f_region": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "rollingmarketplace11fdf303f"
-        }
-      ]
+      "service": "Rekognition"
     }
   },
   "storage": {
-    "rollingmarketplace11fdf303f": {
+    "rmmedia": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
-      "service": "S3",
-      "serviceType": "imported"
+      "service": "S3"
     }
   }
 }

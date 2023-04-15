@@ -2,21 +2,23 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { Button, TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect, useRef } from "react";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { v4 as uuidv4 } from 'uuid'; 
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { v4 as uuidv4 } from "uuid";
+import awsconfig from "../../aws-exports";
 import { Storage } from "aws-amplify";
-// import config from '../aws-exports';
+import { Amplify } from "aws-amplify";
 
-// const {
-//   aws_user_files_s3_bucket_region: region,
-//   aws_user_files_s3_bucket: bucket
-// } = config
+Amplify.configure(awsconfig);
+
+const {
+  aws_user_files_s3_bucket_region: region,
+  aws_user_files_s3_bucket: bucket,
+} = awsconfig;
 
 function getStyles(name, cateName, theme) {
   return {
@@ -41,20 +43,12 @@ const MenuProps = {
 export default function Form() {
   const theme = useTheme();
   const [cateName, setCateName] = useState([]);
-  const categories = [
-    "Categories 1",
-    "Categories 2",
-    "Categories 3",
-    "Categories 4",
-  ];
+  const categories = ["Bag", "Hat", "Glove", "Shoe"];
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setCateName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setCateName(typeof value === "string" ? value.split(",") : value);
   };
 
   useEffect(() => {
@@ -68,50 +62,69 @@ export default function Form() {
     price: "",
     image: "",
     description: "",
-    id: "",
+    categories: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formDetails);
-    postData();
+    // postData();
   };
 
-  const handleReset = (e) => {
+  const handleReset = async (e) => {
     setFormDetails({
       date: "",
       name: "",
       price: "",
       image: "",
       description: "",
-      id: "",
     });
     setCateName([]);
+    setFile('');
+    await Storage.remove(key.replace("/images", ""),  { level: "public" })
   };
 
   // Handle image
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState();
+  const [uploaded, setUploaded] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [key, setKey] = useState('')
   const handleImageUpload = async (e) => {
     e.preventDefault();
     const file = e.target.files[0];
+    // console.log(file);
     const extension = file.name.split(".")[1];
     const name = file.name.split(".")[0];
-    const key = `images/${uuidv4()}${name}.${extension}`;
-    // const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
-    // try {
-    //   // Upload the file to s3 with public access level.
-    //   await Storage.put(key, file, {
-    //     level: "public",
-    //     contentType: file.type,
-    //   });
-    //   // Retrieve the uploaded file to display
-    //   const image = await Storage.get(key, { level: "public" });
-    //   setImage(image);
-    //   setBookDetails({ ...bookDetails, image: url });
-    // } catch (err) {
-    //   console.log(err);
-    // }
-  }
+    setKey(`images/${uuidv4()}${name}.${extension}`);
+    const url = await `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
+    try {
+      // Upload the file to s3 with public access level.
+      const storageResult = await Storage.put(key, file, {
+        level: "public",
+        type: "image/png,image/jpg",
+      });
+      setUploaded(true);
+      // Retrieve the uploaded file to display
+      const imageUrl = await Storage.get(key, { level: "public" });
+      setFile(imageUrl);
+      setFormDetails({ ...formDetails, image: imageUrl });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // console.log(key)
+  // console.log(file)
+  // async () => {
+  //   const storageResult = await Storage.put("puppy.png", file, {
+  //     level: "public",
+  //     type: "image/png,image/jpg",
+  //   });
+  //   setUploaded(true);
+  //   console.log(storageResult);
+  // }
+
+  // setFile(e.target.files[0])
 
   // Handle http request
   const postData = async () => {
@@ -121,9 +134,9 @@ export default function Form() {
         {
           method: "POST",
           headers: {
-            'Access-Control-Allow-Headers' : 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST,GET,PATCH,DELETE'
+            "Access-Control-Allow-Headers": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST,GET,PATCH,DELETE",
           },
           body: JSON.stringify(formDetails),
         }
@@ -154,24 +167,29 @@ export default function Form() {
               justifyContent: "center",
             }}
           >
-            {image ? (
-              <img className="image-preview" src={image} alt="" />
-            ) : (
-              <Button
-                variant="outlined"
-                component="label"
-                style={{ flexGrow: "4" }}
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload Image
-                <input
-                  type="file"
-                  accept="image/jpg"
-                  onChange={(e) => handleImageUpload(e)}
-                  hidden
-                />
-              </Button>
-            )}
+            <Button
+              variant="outlined"
+              component="label"
+              style={{ flexGrow: "4", flexDirection: "column", gap:"15px" }}
+            >
+              {uploaded ? (
+                <img className="image-preview" src={file} alt="" />
+              ) : (
+                ""
+              )}
+              <input
+                type="file"
+                accept="image/png,image/jpg"
+                onChange={handleImageUpload}
+              />
+            </Button>
+            <div>
+              {uploaded ? (
+                <div>Your image is uploaded!</div>
+              ) : (
+                <div>Upload your product photos</div>
+              )}
+            </div>
           </Grid>
           <Grid
             item
@@ -181,10 +199,9 @@ export default function Form() {
             <TextField
               id="outlined-basic"
               label="Product Name"
-              defaultValue=""
               size="small"
               variant="outlined"
-              value={formDetails.name}
+              value={formDetails.name || ""}
               onChange={(e) =>
                 setFormDetails({ ...formDetails, name: e.target.value })
               }
@@ -192,10 +209,9 @@ export default function Form() {
             <TextField
               id="outlined-basic"
               label="Product Price"
-              defaultValue=""
               size="small"
               variant="outlined"
-              value={formDetails.price}
+              value={formDetails.price || ""}
               onChange={(e) =>
                 setFormDetails({ ...formDetails, price: e.target.value })
               }
@@ -206,7 +222,7 @@ export default function Form() {
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={cateName}
+              value={formDetails.categories || ""}
               input={<OutlinedInput />}
               MenuProps={MenuProps}
               onChange={handleChange}
@@ -227,7 +243,7 @@ export default function Form() {
               label="Product Description"
               multiline
               rows={8}
-              value={formDetails.description}
+              value={formDetails.description || ""}
               onChange={(e) =>
                 setFormDetails({ ...formDetails, description: e.target.value })
               }
@@ -236,7 +252,7 @@ export default function Form() {
               Update Product
             </Button>
             <Button variant="outlined" type="button" onClick={handleReset}>
-              Reset
+              Delete
             </Button>
           </Grid>
         </Grid>

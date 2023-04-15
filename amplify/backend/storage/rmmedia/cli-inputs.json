@@ -1,0 +1,16 @@
+{
+  "resourceName": "rmmedia",
+  "policyUUID": "575c2de6",
+  "bucketName": "rmmedia",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
