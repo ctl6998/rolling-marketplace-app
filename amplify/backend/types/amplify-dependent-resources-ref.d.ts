@@ -18,11 +18,5 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     }
-  },
-  "storage": {
-    "rollingmarketplacemedia": {
-      "BucketName": "string",
-      "Region": "string"
-    }
   }
 }

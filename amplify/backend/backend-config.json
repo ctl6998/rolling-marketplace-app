@@ -32,5 +32,30 @@
       "service": "Lambda"
     }
   },
-  "storage": {}
+  "parameters": {
+    "AMPLIFY_storage_rollingmarketplace11fdf303f_bucketName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "rollingmarketplace11fdf303f"
+        }
+      ]
+    },
+    "AMPLIFY_storage_rollingmarketplace11fdf303f_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "rollingmarketplace11fdf303f"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "rollingmarketplace11fdf303f": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "serviceType": "imported"
+    }
+  }
 }
