@@ -161,7 +161,7 @@ export default function Form() {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                This means sending the data to database
+                This means sending the data to the database
             </DialogContentText>
           </DialogContent>
           <DialogActions>
