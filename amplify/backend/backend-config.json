@@ -25,7 +25,28 @@
       "service": "Cognito"
     }
   },
-  "function": {},
+  "function": {
+    "rollingmarketplacelambda1": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "rollingmarketplacelambdaqueriesdata": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "rollingmarketplacelambdaresize": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "rollingmarketplacelambdasns": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "predictions": {},
   "storage": {
     "rmmedia": {

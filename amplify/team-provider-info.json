@@ -17,6 +17,12 @@
       },
       "storage": {
         "rmmedia": {}
+      },
+      "function": {
+        "rollingmarketplacelambda1": {},
+        "rollingmarketplacelambdaqueriesdata": {},
+        "rollingmarketplacelambdasns": {},
+        "rollingmarketplacelambdaresize": {}
       }
     }
   }
